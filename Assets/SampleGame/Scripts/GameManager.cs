@@ -26,9 +26,24 @@ namespace SampleGame
         [SerializeField]
         private int nextLevelIndex;
 
+        private static GameManager _instance;
+        public static GameManager Instance
+        {
+            get { return _instance; }
+        }
+
         // initialize references
         private void Awake()
         {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+            
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+
             _player = Object.FindFirstObjectByType<ThirdPersonCharacter>();
             _objective = Object.FindFirstObjectByType<Objective>();
             _goalEffect = Object.FindFirstObjectByType<GoalEffect>();
@@ -75,6 +90,7 @@ namespace SampleGame
             if(Application.CanStreamedLevelBeLoaded(levelName))
             {
                 SceneManager.LoadScene(levelName);
+                Debug.Log("Loading next level...");
             }else
             {
                 Debug.LogWarning("GAMEMANAGER LoadLevel Error: invalid scene specified!");
