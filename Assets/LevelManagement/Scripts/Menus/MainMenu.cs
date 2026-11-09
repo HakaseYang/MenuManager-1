@@ -1,16 +1,28 @@
 using UnityEngine;
 
-public class MainMenu : MonoBehaviour
+namespace LevelManagement
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class MainMenu : Menu<MainMenu>
     {
-        
-    }
+        public void OnPlayPressed()
+        {
+            LevelLoader.LoadNextLevel();
+            GameMenu.Open();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void OnSettingsPressed()
+        {
+            SettingsMenu.Open();
+        }
+
+        public void OnCreditsPressed()
+        {
+            CreditsScreen.Open();
+        }
+
+        public override void OnBackPressed()
+        {
+            Application.Quit();
+        }
     }
 }

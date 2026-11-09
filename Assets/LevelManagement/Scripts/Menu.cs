@@ -1,79 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SampleGame;
 
 namespace LevelManagement
 {
-    [RequireComponent(typeof(Canvas))]
-    public class Menu : MonoBehaviour
+    // Section 3 : generic base class that turns every menu subclass into a singleton
+    // Section 4 : adds the static Open() helper so callers do not repeat the MenuManager check
+    public abstract class Menu<T> : Menu where T : Menu<T>
     {
-        // 任務三：使用 GameManager 單例載入下一關
-        public void OnPlayPressed()
+        private static T _instance;
+        public static T Instance { get { return _instance; } }
+
+        // protected means outside the class cannot see this method but derive class can
+        // as subclass might require to edit the Awake() method, virtual is added to the prefix
+        protected virtual void Awake()
         {
-            if (GameManager.Instance != null)
+            if (_instance == null)
             {
-                GameManager.Instance.LoadNextLevel();
+                _instance = (T)this;
+            }
+            else if (_instance != (T)this)
+            {
+                Destroy(gameObject);
             }
         }
 
-        // 修改後的設定選單按鈕事件
-        public void OnSettingsPressed() 
+        protected virtual void OnDestroy()
         {
-            if (MenuManager.Instance != null && transform.parent != null)
+            if (_instance == (T)this)
             {
-                // 從同一個父物件下，找出名稱包含 Settings 的選單實例
-                Menu settingsMenu = FindMenuInParent("Settings");
-                if (settingsMenu != null)
-                {
-                    MenuManager.Instance.OpenMenu(settingsMenu);
-                }
+                _instance = null;
             }
         }
 
-        // 任務二：修改為使用 MenuManager 單例呼叫
-        public void OnCreditsPressed()
+        public static void Open()
         {
-            if (MenuManager.Instance != null && transform.parent != null)
+            if (MenuManager.Instance != null && Instance != null)
             {
-                // 從同一個父物件下，找出名稱包含 Credits 的選單實例
-                Menu creditsScreen = FindMenuInParent("Credits");
-                if (creditsScreen != null)
-                {
-                    MenuManager.Instance.OpenMenu(creditsScreen);
-                }
+                MenuManager.Instance.OpenMenu(Instance);
             }
         }
+    }
 
-        // 任務二：修改為使用 MenuManager 單例呼叫
-        public void OnBackPressed()
+    [RequireComponent(typeof(Canvas))]
+    public abstract class Menu : MonoBehaviour
+    {
+        public virtual void OnBackPressed()
         {
             if (MenuManager.Instance != null)
             {
                 MenuManager.Instance.CloseMenu();
             }
-        }
-
-        // ======= 請確保這個方法留在 Menu 類別的大括號之內 =======
-        private Menu FindMenuInParent(string menuNameKey)
-        {
-            Transform parentTransform = transform.parent;
-            if (parentTransform == null) return null;
-
-            foreach (Transform child in parentTransform)
-            {
-                if (child.name.Contains(menuNameKey))
-                {
-                    Menu menuComponent = child.GetComponent<Menu>();
-                    if (menuComponent != null)
-                    {
-                        return menuComponent;
-                    }
-                }
-            }
-            
-            Debug.LogWarning($"在父物件下找不到包含 {menuNameKey} 的選單。");
-            return null;
         }
     }
 }

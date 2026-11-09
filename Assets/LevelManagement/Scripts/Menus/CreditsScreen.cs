@@ -1,16 +1,12 @@
 using UnityEngine;
 
-public class CreditsScreen : MonoBehaviour
+namespace LevelManagement
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class CreditsScreen : Menu<CreditsScreen>
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+        }
     }
 }

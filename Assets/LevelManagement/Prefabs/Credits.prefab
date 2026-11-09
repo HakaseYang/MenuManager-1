@@ -292,7 +292,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5974626714458834665}
-        m_TargetAssemblyTypeName: LevelManagement.Menu, Assembly-CSharp
+        m_TargetAssemblyTypeName: LevelManagement.CreditsScreen, Assembly-CSharp
         m_MethodName: OnBackPressed
         m_Mode: 1
         m_Arguments:
@@ -455,7 +455,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2192552490543118872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faae1f8697bb0b445ad2c685f1f132cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ac7f5bc315ce5c4c986051be34fff30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManagement.Menu
 --- !u!1 &3911183102333621181

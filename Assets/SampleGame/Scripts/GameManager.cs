@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
-using UnityEngine.SceneManagement;
+using LevelManagement;
 
 namespace SampleGame
 {
@@ -20,12 +20,6 @@ namespace SampleGame
         private bool _isGameOver;
         public bool IsGameOver { get { return _isGameOver; } }
 
-        [SerializeField]
-        private string nextLevelName;
-
-        [SerializeField]
-        private int nextLevelIndex;
-
         private static GameManager _instance;
         public static GameManager Instance
         {
@@ -35,18 +29,20 @@ namespace SampleGame
         // initialize references
         private void Awake()
         {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(this.gameObject);
-                return;
-            }
-            
+            // every scene owns its own GameManager, the newest one takes over the singleton
             _instance = this;
-            DontDestroyOnLoad(this.gameObject);
 
             _player = Object.FindFirstObjectByType<ThirdPersonCharacter>();
             _objective = Object.FindFirstObjectByType<Objective>();
             _goalEffect = Object.FindFirstObjectByType<GoalEffect>();
+        }
+
+        private void OnDestroy()
+        {
+            if (_instance == this)
+            {
+                _instance = null;
+            }
         }
 
         // end the level
@@ -79,46 +75,9 @@ namespace SampleGame
             {
                 _isGameOver = true;
                 _goalEffect.PlayEffect();
-                // LoadLevel(nextLevelName);
-                // LoadLevel(nextLevelIndex);
-                // ReloadLevel();
-                LoadNextLevel();
+                //LoadNextLevel();
+                WinScreen.Open();
             }
-        }
-        private void LoadLevel(string levelName)
-        {
-            if(Application.CanStreamedLevelBeLoaded(levelName))
-            {
-                SceneManager.LoadScene(levelName);
-                Debug.Log("Loading next level...");
-            }else
-            {
-                Debug.LogWarning("GAMEMANAGER LoadLevel Error: invalid scene specified!");
-            }
-        }
-
-        private void LoadLevel(int levelIndex)
-        {
-            if(levelIndex >= 0 && levelIndex < SceneManager.sceneCountInBuildSettings)
-            {
-                SceneManager.LoadScene(levelIndex);
-            }else
-            {
-                Debug.LogWarning("GAMEMANAGER LoadLevel Error: invalid scene specified!");
-            }
-            
-        }
-
-        private void ReloadLevel()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-
-        public void LoadNextLevel()
-        {
-            int nextSceneIndex = (SceneManager.GetActiveScene().buildIndex + 1) %
-                                SceneManager.sceneCountInBuildSettings;
-            LoadLevel(nextSceneIndex);
         }
 
         // check for the end game condition on each frame
@@ -129,6 +88,5 @@ namespace SampleGame
                 EndLevel();
             }
         }
-
     }
 }

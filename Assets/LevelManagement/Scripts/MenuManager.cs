@@ -6,9 +6,12 @@ namespace LevelManagement
 {
     public class MenuManager : MonoBehaviour
     {
-        public Menu mainMenuPrefab;
-        public Menu settingMenuPrefab;
-        public Menu creditsScreenPrefab;
+        public MainMenu mainMenuPrefab;
+        public SettingsMenu settingMenuPrefab;
+        public CreditsScreen creditsScreenPrefab;
+        public GameMenu gameMenuPrefab;
+        public PauseMenu pauseMenuPrefab;
+        public WinScreen winScreenPrefab;
 
         [SerializeField]
         private Transform _menuParent;
@@ -30,6 +33,8 @@ namespace LevelManagement
             {
                 _instance = this;
                 IntializeMenu();
+                //don't destroy MenuManager when we jump to the next scene
+                DontDestroyOnLoad(gameObject);
             }
         }
 
@@ -49,10 +54,19 @@ namespace LevelManagement
                 _menuParent = menuParentObject.transform;
             }
 
-            Menu[] menuPrefabs = {mainMenuPrefab, settingMenuPrefab, creditsScreenPrefab};
+            //don't destroy the Menus and the gameobjects inside Menus
+            DontDestroyOnLoad(_menuParent.gameObject);
+
+            Menu[] menuPrefabs = {mainMenuPrefab, settingMenuPrefab, creditsScreenPrefab,
+                                  gameMenuPrefab, pauseMenuPrefab, winScreenPrefab};
 
             foreach (Menu prefab in menuPrefabs)
             {
+                if (prefab == null)
+                {
+                    continue;
+                }
+
                 Menu menuInstance = Instantiate(prefab, _menuParent);
                 if(prefab != mainMenuPrefab)
                 {
@@ -86,7 +100,7 @@ namespace LevelManagement
 
         public void CloseMenu()
         {
-            if(_menuStack == null)
+            if(_menuStack == null || _menuStack.Count == 0)
             {
                 Debug.LogWarning("MENU MANAGER CloseMenu ERROR: invalid menu");
                 return;
@@ -101,7 +115,5 @@ namespace LevelManagement
                 nextMenu.gameObject.SetActive(true);
             }
         }
-
-
     }
 }

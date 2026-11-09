@@ -290,7 +290,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3780743485799578479}
-        m_TargetAssemblyTypeName: LevelManagement.Menu, Assembly-CSharp
+        m_TargetAssemblyTypeName: LevelManagement.MainMenu, Assembly-CSharp
         m_MethodName: OnPlayPressed
         m_Mode: 1
         m_Arguments:
@@ -421,7 +421,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5630590277014067279}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3780743485799578479}
+        m_TargetAssemblyTypeName: LevelManagement.MainMenu, Assembly-CSharp
+        m_MethodName: OnBackPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2513122163885183228
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,7 +548,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2513122163885183228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faae1f8697bb0b445ad2c685f1f132cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 17f3d082d5b822a48950182f71ecc619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManagement.Menu
 --- !u!1 &2976302501049736559
@@ -661,7 +673,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3780743485799578479}
-        m_TargetAssemblyTypeName: LevelManagement.Menu, Assembly-CSharp
+        m_TargetAssemblyTypeName: LevelManagement.MainMenu, Assembly-CSharp
         m_MethodName: OnSettingsPressed
         m_Mode: 1
         m_Arguments:
@@ -1429,7 +1441,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3780743485799578479}
-        m_TargetAssemblyTypeName: LevelManagement.Menu, Assembly-CSharp
+        m_TargetAssemblyTypeName: LevelManagement.MainMenu, Assembly-CSharp
         m_MethodName: OnCreditsPressed
         m_Mode: 1
         m_Arguments:
